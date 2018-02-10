@@ -45,7 +45,7 @@ paths:
         200:
           description: "Authorization successfull"
           schema:
-            $ref: "#/definitions/Authorization"        
+            $ref: "#/definitions/Authorization"    
         400:
           description: "Login or password incorrect"
             

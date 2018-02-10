@@ -18,10 +18,41 @@ consumes:
 produces:
   - application/json
 paths:
+  /auth/token:
+    post:
+      tags:
+        - "user"
+      summary: Authorization
+      description: Authorization by login and password
+      consumes:
+        "application/json"
+      produces:
+        "application/json"
+      parameters:
+      - in: "body"
+        name: "body"
+        required: true
+        schema:
+          type: object
+          properties:
+            _login: 
+              type: string
+              exmaple: "user@domain.ru"
+            _password:
+              type: string
+              example: 'qwerty'
+      responses:
+        200:
+          description: "Authorization successfull"
+          schema:
+            $ref: "#/definitions/Authorization"        
+        400:
+          description: "Login or password incorrect"
+            
   /auth/activate:
     post:
       tags:
-      - "pet"
+      - "user"
       summary: "Activate user"
       description: "Activate user by invitation hash"
       consumes:
@@ -40,6 +71,10 @@ paths:
           example: 
             hash: a4c390ab66e4a0e6337004b97
       responses:
+        200:
+          description: "Activation successfull"
+          schema:
+            $ref: "#/definitions/Authorization"  
         404: 
           description: "Invitation not found"
         405:
@@ -52,12 +87,13 @@ paths:
     x-swagger-pipe: swagger_raw
 # complex objects have schema definitions
 definitions:
-  HelloWorldResponse:
-    required:
-      - message
+  Authorization:
+    type: "object"
     properties:
-      message:
-        type: string
+      token:
+        type: "string"
+        example: "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXUyJ9"
+
   ErrorResponse:
     required:
       - message

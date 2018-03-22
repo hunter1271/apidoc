@@ -1,6 +1,6 @@
 swagger: "2.0"
 info:
-  version: "9.0.1"
+  version: "0.0.1"
   title: Amal CRM API
 # during dev, should point to your local machine
 host: localhost:10010
@@ -25,27 +25,27 @@ paths:
       summary: Authorization
       description: Authorization by login and password
       consumes:
-        "application/json"
+      - application/json
       produces:
-        "application/json"
+      - application/json
       parameters:
       - in: "body"
         name: "body"
         required: true
         schema:
-          type: object
+          type: "object"
           properties:
             _login: 
-              type: string
-              exmaple: "user@domain.ru"
+              type: "string"
+              example: "user@domain.ru"
             _password:
-              type: string
+              type: "string"
               example: 'qwerty'
       responses:
         200:
           description: "Authorization successfull"
           schema:
-            $ref: "#/definitions/Authorization"    
+            $ref: "#/definitions/AuthenticationResponse"    
         400:
           description: "Login or password incorrect"
             
@@ -64,7 +64,7 @@ paths:
         name: "body"
         required: true
         schema:
-          type: object
+          type: "object"
           properties:
             hash:
               type: string
@@ -74,20 +74,32 @@ paths:
         200:
           description: "Activation successfull"
           schema:
-            $ref: "#/definitions/Authorization"  
+            $ref: "#/definitions/AuthenticationResponse"  
         404: 
           description: "Invitation not found"
         405:
           description: "Invitation expired"
-      security:
-      - petstore_auth:
-        - "write:pets"
-        - "read:pets"
-  /swagger:
-    x-swagger-pipe: swagger_raw
+        500:
+          description: "Api exception"
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+            
+    /user/profile
+      get:
+        tags:
+          - "user"
+          - "draft"
+        summary: "Returns user profile data"
+        responses:
+          200:
+            description: "Profile data"
+            schema:
+              $ref: ""
+
 # complex objects have schema definitions
 definitions:
-  Authorization:
+
+  AuthenticationResponse:
     type: "object"
     properties:
       token:
@@ -100,3 +112,10 @@ definitions:
     properties:
       message:
         type: string
+        
+  UserProfile:
+    type: "object"
+    properties:
+      firstName: "Sagdiev"
+      middleName: "Rustamovich"
+      lastName: "Rustam"
